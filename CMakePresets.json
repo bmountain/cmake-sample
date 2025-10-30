@@ -1,0 +1,46 @@
+{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "default",
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/build",
+      "installDir": "${sourceDir}",
+      "cacheVariables":{
+        "CMAKE_CONFIGURATION_TYPES": "Release;Debug;Asan;Test;Deploy"
+      },
+      "environment": {
+        "CXXFLAGS": "-Wall -Wextra -Wpedantic",
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "base",
+      "configurePreset": "default",
+      "hidden": true
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "configuration": "Release"
+    },
+    {
+      "name": "debug",
+      "inherits": "base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "asan",
+      "inherits": "base",
+      "configuration": "Asan"
+    },
+    {
+      "name": "test",
+      "inherits": "base",
+      "configuration": "Test"
+    }
+  ]
+}
