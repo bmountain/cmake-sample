@@ -7,7 +7,7 @@
       "binaryDir": "${sourceDir}/build",
       "installDir": "${sourceDir}",
       "cacheVariables":{
-        "CMAKE_CONFIGURATION_TYPES": "Release;Debug;Asan;Test;Deploy"
+        "CMAKE_CONFIGURATION_TYPES": "Release;Debug;Asan;Test"
       },
       "environment": {
         "CXXFLAGS": "-Wall -Wextra -Wpedantic",

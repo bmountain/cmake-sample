@@ -1,0 +1,7 @@
+# Reset compiler options
+set(CONFIGS ${CMAKE_CONFIGURATION_TYPES})
+foreach(CONFIG_TYPE IN LISTS CONFIGS)
+  string(TOUPPER ${CONFIG_TYPE} UPPER_CONFIG_TYPE)
+  set(VAR_NAME CMAKE_CXX_FLAGS_${UPPER_CONFIG_TYPE})
+  set(${VAR_NAME} "" CACHE STRING "CXX compiler flags for ${CONFIG_TYPE} build" FORCE)
+endforeach()

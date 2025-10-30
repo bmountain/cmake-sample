@@ -5,7 +5,7 @@ BUILD_PRESETS := release debug asan test
 
 $(BUILD_PRESETS): configure
 	@echo "Building with preset $@. Binaries will be installed to $(INSTALL_DIR)."
-	cmake --build $(BUILD_DIR) --preset $@
+	cmake --build $(BUILD_DIR) --preset $@ -v
 	cmake --install $(BUILD_DIR) --config $@
 
 configure:
