@@ -6,6 +6,7 @@ $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Asan>>>:NDEBUG>
 )
 endfunction()
 
+
 # Set -g3 -O0 for Debug and Asan. Set -O2 for others.
 function(set_compile_options TARGET)
 target_compile_options(${TARGET} PRIVATE
@@ -16,48 +17,61 @@ target_compile_options(${TARGET} PRIVATE $<$<CONFIG:Asan>:-fsanitize=address -fn
 target_link_options(${TARGET} PRIVATE $<$<CONFIG:Asan>:-fsanitize=address>)
 endfunction()
 
+
 # create executable
-function(create_executable 
-TARGET
-SOURCE_LIST
-LIBRARY_LIST
-INCLUDE_DIR_LIST
+function(create_executable)
+
+cmake_parse_arguments(ARGS
+""
+"TARGET"
+"SOURCES;INCLUDES;LIBRARIES"
+${ARGN}
 )
-add_executable(${TARGET})
-target_sources(${TARGET} PRIVATE ${SOURCE_LIST})
-target_include_directories(${TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${TARGET} PRIVATE ${INCLUDE_DIR_LIST})
-target_link_libraries(${TARGET} PRIVATE ${LIBRARY_LIST})
-set_compile_definition(${TARGET})
-set_compile_options(${TARGET})
-install(TARGETS ${TARGET})
+
+add_executable(${ARGS_TARGET})
+target_sources(${ARGS_TARGET} PRIVATE ${ARGS_SOURCES})
+target_include_directories(${ARGS_TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${ARGS_TARGET} PRIVATE ${ARGS_INCLUDES})
+target_link_libraries(${ARGS_TARGET} PRIVATE ${ARGS_LIBRARIES})
+set_compile_definition(${ARGS_TARGET})
+set_compile_options(${ARGS_TARGET})
+
 endfunction()
+
 
 # create library
-function(create_library
-TARGET
-SOURCE_LIST
-LIBRARY_LIST
-INCLUDE_DIR_LIST
-) 
+function(create_library) 
 
-add_library(${TARGET} STATIC)
+cmake_parse_arguments(ARGS
+""
+"TARGET"
+"SOURCES;INCLUDES;LIBRARIES"
+${ARGN}
+)
 
-target_sources(${TARGET} PRIVATE ${SOURCE_LIST})
-target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${TARGET} PRIVATE ${INCLUDE_DIR_LIST})
-target_link_libraries(${TARGET} PRIVATE ${LIBRARY_LIST})
-set_compile_definition(${TARGET})
-set_compile_options(${TARGET})
+add_library(${ARGS_TARGET} STATIC)
+target_sources(${ARGS_TARGET} PRIVATE ${ARGS_SOURCES})
+target_include_directories(${ARGS_TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${ARGS_TARGET} PRIVATE ${ARGS_INCLUDES})
+target_link_libraries(${ARGS_TARGET} PRIVATE ${ARGS_LIBRARIES})
+set_compile_definition(${ARGS_TARGET})
+set_compile_options(${ARGS_TARGET})
+
 endfunction()
 
+
 # create header-only libary
-function(create_header_only_library
-TARGET
-LIBRARY_LIST
-INCLUDE_DIR_LIST
+function(create_header_only_library)
+
+cmake_parse_arguments(ARGS
+""
+"TARGET"
+"LIBRARIES;INCLUDES"
+${ARGN}
 )
-add_library(${TARGET} INTERFACE)
-target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${INCLUDE_DIR_LIST})
-target_link_libraries(${TARGET} INTERFACE ${LIBRARY_LIST})
+
+add_library(${ARGS_TARGET} INTERFACE)
+target_include_directories(${ARGS_TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${ARGS_INCLUDES})
+target_link_libraries(${ARGS_TARGET} INTERFACE ${ARGS_LIBRARIES})
+
 endfunction()

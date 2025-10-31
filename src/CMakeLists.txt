@@ -1,14 +1,32 @@
-set(TARGET hello)
-set(SOURCE_LIST hello.cpp)
-set(INCLUDE_DIR_LIST "")
-set(LIBRARY_LIST "")
+create_executable(
+TARGET
+  hello
+SOURCES
+  hello.cpp
+)
 
-create_executable("${TARGET}" "${SOURCE_LIST}" "${LIBRARY_LIST}" "${INCLUDE_DIR_LIST}")
-install(TARGETS hello)
+create_library(
+TARGET
+  add
+SOURCES
+  add.cpp
+)
 
-set(TARGET add)
-set(SOURCE_LIST add.cpp)
-set(INCLUDE_DIR_LIST "")
-set(LIBRARY_LIST "")
-create_library("${TARGET}" "${SOURCE_LIST}" "${LIBRARY_LIST}" "${INCLUDE_DIR_LIST}")
-create_executable("useadd" "useadd.cpp" "add" "")
+create_executable(
+TARGET
+  useadd
+SOURCES
+  useadd.cpp
+LIBRARIES
+  add
+)
+
+create_executable(
+TARGET
+  use_unordered_map
+SOURCES
+  use_unordered_map.cpp
+)
+target_compile_definitions(use_unordered_map PRIVATE $<$<CONFIG:Test>:NO_UNORDERED_MAP>)
+
+install(TARGETS hello useadd use_unordered_map)

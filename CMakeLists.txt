@@ -13,3 +13,6 @@ include(${CMAKE_SOURCE_DIR}/cmake/initialize_flags.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/create_target.cmake)
 
 add_subdirectory(src)
+
+include(${CMAKE_SOURCE_DIR}/cmake/doxygen.cmake)
+generate_doxygen(src doxygen)
